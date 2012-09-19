@@ -1,0 +1,127 @@
+<html>
+<head>
+<title>Tests</title>
+<script type="text/javascript"><!--
+
+var breite=1000;
+
+function setUp()
+{
+	clearView();
+	drawMiddleLine();
+}
+
+function clearView()
+{
+	var canvas=document.getElementById("view");
+	if(canvas.getContext)
+	{
+		canvas=canvas.getContext("2d");
+		canvas.fillStyle="rgb(255,255,255)";
+		canvas.fillRect(0,0,breite,500);
+	}
+}
+
+var kurve=0;
+var sampling=0;
+
+function sinus(faktor)
+{
+	kurve=faktor;
+	var canvas=document.getElementById("view");
+	if(canvas.getContext)
+	{
+		canvas=canvas.getContext("2d");
+		canvas.fillStyle="rgba(0,0,0)";
+		canvas.beginPath();
+		canvas.moveTo(0,250);
+		for(var x=0;x<=breite;x++)
+		{
+			canvas.lineTo(x,((-50)*Math.sin(kurve*(x/10))+250));
+		}
+
+		clearView();
+		drawMiddleLine();
+		canvas.stroke();
+	}
+}
+
+function sampler(faktor)
+{
+	sampling=breite/faktor;
+	var canvas=document.getElementById("view");
+	if(canvas.getContext)
+	{
+		canvas=canvas.getContext("2d");
+		canvas.fillStyle="rgb(0,0,0)";
+		for(var x=0;x<=breite;x++)
+		{
+			if(x%sampling==0)
+			{
+				canvas.moveTo(x,250);
+				canvas.lineTo(x,((-50)*Math.sin(kurve*(x/10))+250));
+				canvas.stroke();
+			}
+		}
+	}
+}
+
+function gegenkurve()
+{
+	var canvas=document.getElementById("view");
+	if(canvas.getContext)
+	{
+		canvas=canvas.getContext("2d");
+		// Gegenkurve
+		var alt=250;
+		var xalt=0;
+		for(var x=0;x<=breite;x++)
+		{
+			if(x%sampling==0)
+			{
+				canvas.moveTo(xalt,alt);
+				alt=(-50)*Math.sin(kurve*(x/10))+250;
+				canvas.lineTo(x,alt);
+				xalt=x;
+			}
+		}
+		canvas.stroke();
+	}
+}
+
+function debug()
+{
+	alert("Sampling: "+sampling+"\nKurve: "+kurve);
+}
+
+function drawMiddleLine()
+{
+	var canvas=document.getElementById("view");
+	if(canvas.getContext)
+	{
+		canvas=canvas.getContext("2d");
+		canvas.fillStyle="rgb(0,0,0)";
+		canvas.moveTo(0,250);
+		canvas.lineTo(breite,250);
+		canvas.stroke();
+	}
+}
+
+//--></script>
+</head>
+<body onload="setUp();">
+<h1>Aliasing und andere</h1>
+<canvas id="view" height="500" width="1000">
+Ihr Browser kennt keine Canvas
+</canvas>
+<br>
+<form action="#" name="form">
+<input type="button" onclick="clearView();" value="clear"><br>
+<input type="text" value="1" name="faktor"><input type="button" onclick="sinus(document.form.faktor.value);" value="Sinus"><br>
+<input type="text" value="20" name="samplinger"><input type="button" onclick="sampler(document.form.samplinger.value);" value="Sampling">
+<input type="button" value="Debug" onclick="debug();"><br>
+<input type="button" value="Gegenkurve" onclick="gegenkurve();">
+</form>
+<div align="right">&copy; Copyright 2012 Joel Fridolin Meyer</div>
+</body>
+</html>

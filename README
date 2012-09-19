@@ -1,0 +1,10 @@
+Was soll ich noch sagen?
+
+der wert, der bei der Kurve eingetragen werden muss, entspricht WEDER der frequenz, noch irgendwelchen anderen (großartigen) physikalischen werten.
+die gerechnete formel ist:
+
+-50*sin(wert*(x/10)).
+
+zu beachten ist, dass x der jeweilige wert des pixel ist. soll heißen, 3 bedeutet 3 pixel (deswegen durch 10 geteilt, sonst würde man ja nichts sehen)
+
+it is here, so you can do with it what you want.
